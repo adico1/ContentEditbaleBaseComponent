@@ -1,12 +1,25 @@
 <html>
-  <head>
+<head>
     <title>Sandbox</title>
-    <meta charset="UTF-8" />
-  </head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h2>UMD Version</h2>
+    <iframe id="umd-frame" src="test-umd.html"></iframe>
 
-  <body>
-    <div id="app"></div>
+    <h2>ESM Version</h2>
+    <iframe id="esm-frame" src="test-esm.html"></iframe>
 
-    <script src="src/index.ts"></script>
-  </body>
+    <h2>Development Version</h2>
+    <iframe id="dev-frame" src="test-dev.html"></iframe>
+
+    <style>
+        iframe {
+            width: 100%;
+            height: 50px; /* or any height you prefer */
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+    </style>
+</body>
 </html>

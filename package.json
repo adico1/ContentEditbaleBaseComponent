@@ -4,24 +4,28 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "start": "parcel index.html --open",
-    "build": "parcel build index.html"
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "start": "rollup -c -w"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/preset-env": "7.23.3",
+    "@jest/types": "27.4.2",
+    "@rollup/plugin-node-resolve": "15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "11.1.5",
     "@testing-library/jest-dom": "6.1.4",
     "@types/jest": "29.5.8",
     "babel-jest": "29.7.0",
     "jest": "29.7.0",
-    "parcel-bundler": "1.12.5",
-    "ts-jest": "29.1.1"
-  },
-  "devDependencies": {
-    "typescript": "4.4.4",
-    "jest": "27.4.7",
-    "@jest/types": "27.4.2"
-  },
-  "resolutions": {
-    "@babel/preset-env": "7.13.8"
+    "jest-environment-jsdom": "^29.7.0",
+    "rollup": "4.3.0",
+    "rollup-plugin-livereload": "2.0.5",
+    "rollup-plugin-serve": "2.0.2",
+    "ts-jest": "29.1.1",
+    "tslib": "^2.6.2",
+    "typescript": "5.2.2"
   },
   "keywords": []
 }

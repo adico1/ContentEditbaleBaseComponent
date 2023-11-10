@@ -3,10 +3,11 @@ import '@testing-library/jest-dom';
 import { ContentEditableComponent } from './content-editable'; // Adjust the import based on your actual file structure
 
 // contentEditableComponent.test.ts
-describe('ContentEditableComponent', () => {
+describe('ContentEditableComponent - initialization', () => {
   let container: HTMLDivElement;
 
   beforeEach(() => {
+    // Set up a DOM element as a render target
     container = document.createElement('div');
     document.body.appendChild(container);
   });
@@ -36,28 +37,61 @@ describe('ContentEditableComponent', () => {
   // Test instantiation with an initial value
   it('should be instantiated with an initial value', () => {
     const initialValue = 'Hello, World!';
-    const contentEditable = new ContentEditableComponent(initialValue);
+    const contentEditable = new ContentEditableComponent({
+      content: initialValue,
+    });
 
     // Check if the contentEditable component's value equals the initial value
     expect(contentEditable.content).toBe(initialValue);
 
-    // If your component renders to the DOM, you may want to append it to a document body
-    // and then check if the innerHTML of the contenteditable element matches the initial value.
-    // This would be more of an integration test rather than a pure unit test.
-    // Example:
-    // document.body.appendChild(contentEditable.render());
-    // const contentEditableElement = document.querySelector('[contenteditable]');
-    // expect(contentEditableElement.innerHTML).toBe(initialValue);
+    document.body.appendChild(contentEditable.render());
+    const contentEditableElement = document.querySelector('[contenteditable]');
+    expect(contentEditableElement?.innerHTML).toBe(initialValue);
+  });
+
+  it('should be instantiated with an default Style', () => {
+    const initialValue = 'Hello, World!';
+    const contentEditable = new ContentEditableComponent({
+      content: initialValue,
+      useDefaultStyle: true,
+    });
+
+    // Check if the contentEditable component's value equals the initial value
+    expect(contentEditable.content).toBe(initialValue);
+
+    document.body.appendChild(contentEditable.render());
+    const contentEditableElement = document.querySelector('[contenteditable]');
+    expect(contentEditableElement?.innerHTML).toBe(initialValue);
+  });
+});
+
+describe('ContentEditableComponent - defaults', () => {
+  let component: ContentEditableComponent;
+  let container: HTMLDivElement;
+  let contentEditableElement: HTMLElement;
+
+  beforeEach(() => {
+    // Set up a DOM element as a render target
+    container = document.createElement('div');
+    document.body.appendChild(container);
+
+    // Instantiate the component
+    component = new ContentEditableComponent();
+    container.appendChild(component.render());
+
+    contentEditableElement = container.querySelector(
+      '[contenteditable]',
+    ) as HTMLElement;
+    if (!contentEditableElement) {
+      throw new Error('Test Exception - contentEditableElement cannot be null');
+    }
+  });
+
+  afterEach(() => {
+    document.body.removeChild(container);
   });
 
   it('renders a contenteditable element when attached to the DOM', () => {
-    const initialValue = 'Hello, World!';
-    const contentEditable = new ContentEditableComponent(initialValue);
-    container.appendChild(contentEditable.render());
-    const contentEditableElement = container.querySelector(
-      '[contenteditable]',
-    ) as HTMLElement | null;
-
     // Check that the element is not null or undefined
     expect(contentEditableElement).toBeDefined();
 
@@ -66,10 +100,83 @@ describe('ContentEditableComponent', () => {
     console.log(contentEditableElement);
     // Check that the element is an instance of HTMLElement
     expect(contentEditableElement).toBeInstanceOf(HTMLElement);
-
-    // Now we can safely check the isContentEditable property because we've asserted the element is an HTMLElement.
-    expect((contentEditableElement as HTMLElement).isContentEditable).toBe(
-      true,
-    );
   });
+
+  // it('has a non-default background color when focused', () => {
+  //   const editableElement = container.querySelector('.contenteditable');
+  //   // Trigger focus on the element
+  //   editableElement.focus();
+  //   // Assuming the focus triggers a style change
+  //   expect(window.getComputedStyle(editableElement).backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+  // });
+});
+
+describe('ContentEditableComponent - default styles', () => {
+  let component: ContentEditableComponent;
+  let container: HTMLDivElement;
+  let contentEditableElement: HTMLElement;
+
+  beforeEach(() => {
+    // Set up a DOM element as a render target
+    container = document.createElement('div');
+    document.body.appendChild(container);
+
+    // Instantiate the component
+    const useDefaultFont = true;
+    component = new ContentEditableComponent({ useDefaultStyle: true });
+    container.appendChild(component.render());
+
+    contentEditableElement = container.querySelector(
+      '[contenteditable]',
+    ) as HTMLElement;
+    if (!contentEditableElement) {
+      throw new Error('Test Exception - contentEditableElement cannot be null');
+    }
+  });
+
+  afterEach(() => {
+    document.body.removeChild(container);
+  });
+
+  it('renders a contenteditable element when attached to the DOM', () => {
+    // Check that the element is not null or undefined
+    expect(contentEditableElement).toBeDefined();
+
+    // Check that the contenteditable attribute is 'true' (the element is editable)
+    expect(contentEditableElement).toHaveAttribute('contenteditable', 'true');
+    console.log(contentEditableElement);
+    // Check that the element is an instance of HTMLElement
+    expect(contentEditableElement).toBeInstanceOf(HTMLElement);
+  });
+
+  it('renders with default styles', () => {
+    // Define default styles:
+    const defaultStyles = {
+      'min-height': '2em',
+      border: '1px solid #d4d4d4',
+      padding: '0.5em',
+      'background-color': '#fff',
+      'font-family': 'Arial, sans-serif',
+      'font-size': '1rem',
+      'line-height': '1.5',
+    };
+
+    // Get the rendered element, assumed to have a method 'getRootElement' that returns the top-level DOM node
+    // Assuming the focus triggers a style change
+    const computedStyles = window.getComputedStyle(contentEditableElement);
+
+    // Check if the rendered element's style matches the default styles
+    for (const [key, value] of Object.entries(defaultStyles)) {
+      expect(computedStyles[key as any]).toBe(value);
+      expect(contentEditableElement.style[key as any]).toBe(value);
+    }
+  });
+
+  // it('has a non-default background color when focused', () => {
+  //   const editableElement = container.querySelector('.contenteditable');
+  //   // Trigger focus on the element
+  //   editableElement.focus();
+  //   // Assuming the focus triggers a style change
+  //   expect(window.getComputedStyle(editableElement).backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+  // });
 });

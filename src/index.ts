@@ -1,3 +1,2 @@
-export function main(arr: number[]): number[] {
-  return arr;
-}
+// file: src/index.ts
+export { ContentEditableComponent } from './content-editable';
