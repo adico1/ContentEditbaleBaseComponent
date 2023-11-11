@@ -31,6 +31,30 @@ const devPlugins = [
   }),
 ];
 
+// React-specific build configurations
+const reactConfig = {
+  input: 'src/react/index.tsx',
+  output: [
+    {
+      file: 'dist/content-editable-base.react.umd.js',
+      format: 'umd',
+      name: 'contentEditableReactBase',
+      globals: {
+        react: 'React',
+        'react-dom': 'ReactDOM',
+      },
+      ...productionOutputOptions,
+    },
+    {
+      file: 'dist/content-editable-base.react.esm.js',
+      format: 'es',
+      ...productionOutputOptions,
+    },
+  ],
+  plugins: [...commonPlugins],
+  external: ['react', 'react-dom'], // React and ReactDOM should not be bundled
+};
+
 module.exports = [
   // UMD build
   {
@@ -62,6 +86,7 @@ module.exports = [
       // List of dependencies to exclude from the bundle
     ],
   },
+  reactConfig,
   // Add a separate output for development that includes the dev server and livereload
   ...(isDev
     ? [

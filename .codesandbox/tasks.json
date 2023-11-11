@@ -14,7 +14,7 @@
       "command": "yarn start",
       "runAtStart": true,
       "preview": {
-        "port": 3000
+        "port": 3001
       }
     },
     "build": {
@@ -27,7 +27,7 @@
       "command": "yarn jest",
       "runAtStart": true,
       "preview": {
-        "port": 3001
+        "port": 3002
       }
     }
   }

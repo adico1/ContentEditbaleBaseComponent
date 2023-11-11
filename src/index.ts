@@ -1,2 +1,4 @@
-// file: src/index.ts
-export { ContentEditableComponent } from './content-editable';
+// src/index.ts
+
+// Re-export all core functionality
+export * from './core/index';

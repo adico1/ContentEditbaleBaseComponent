@@ -50,7 +50,7 @@ const helpers = {
   },
 };
 
-export class ContentEditableComponent {
+export default class ContentEditableComponent {
   private static addedStyles = false;
   private element: HTMLElement;
 
