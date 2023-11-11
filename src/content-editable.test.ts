@@ -9,6 +9,7 @@ describe('ContentEditableComponent - initialization', () => {
   beforeEach(() => {
     // Set up a DOM element as a render target
     container = document.createElement('div');
+    container.id = 'testinit';
     document.body.appendChild(container);
   });
 
@@ -18,7 +19,7 @@ describe('ContentEditableComponent - initialization', () => {
 
   it('should be instantiated without any parameters', () => {
     const instantiate = () => {
-      const component = new ContentEditableComponent();
+      const component = ContentEditableComponent.create();
       return component;
     };
 
@@ -29,9 +30,14 @@ describe('ContentEditableComponent - initialization', () => {
     // is in the expected initial state, for example:
     const component = instantiate();
     expect(component).toBeInstanceOf(ContentEditableComponent);
-    // If there's a default state or property, you can expect them to be initialized to those values
-    // For example, if your component has a property 'content' that should default to an empty string:
-    expect(component.content).toBe('');
+    // a default state or property, should be initialized to those values
+    // property 'content' should default to an empty string:
+    container.appendChild(component.render());
+
+    const contentEditableElement = document.querySelector(
+      '#testinit [contenteditable]',
+    );
+    expect(contentEditableElement?.innerHTML).toBe('');
   });
 
   // Test instantiation with an initial value
@@ -41,26 +47,10 @@ describe('ContentEditableComponent - initialization', () => {
       content: initialValue,
     });
 
-    // Check if the contentEditable component's value equals the initial value
-    expect(contentEditable.content).toBe(initialValue);
-
-    document.body.appendChild(contentEditable.render());
-    const contentEditableElement = document.querySelector('[contenteditable]');
-    expect(contentEditableElement?.innerHTML).toBe(initialValue);
-  });
-
-  it('should be instantiated with an default Style', () => {
-    const initialValue = 'Hello, World!';
-    const contentEditable = new ContentEditableComponent({
-      content: initialValue,
-      useDefaultStyle: true,
-    });
-
-    // Check if the contentEditable component's value equals the initial value
-    expect(contentEditable.content).toBe(initialValue);
-
-    document.body.appendChild(contentEditable.render());
-    const contentEditableElement = document.querySelector('[contenteditable]');
+    container.appendChild(contentEditable.render());
+    const contentEditableElement = document.querySelector(
+      '#testinit [contenteditable]',
+    );
     expect(contentEditableElement?.innerHTML).toBe(initialValue);
   });
 });
@@ -73,14 +63,15 @@ describe('ContentEditableComponent - defaults', () => {
   beforeEach(() => {
     // Set up a DOM element as a render target
     container = document.createElement('div');
+    container.id = 'test-defaults';
     document.body.appendChild(container);
 
     // Instantiate the component
-    component = new ContentEditableComponent();
+    component = ContentEditableComponent.create();
     container.appendChild(component.render());
 
     contentEditableElement = container.querySelector(
-      '[contenteditable]',
+      '#test-defaults [contenteditable]',
     ) as HTMLElement;
     if (!contentEditableElement) {
       throw new Error('Test Exception - contentEditableElement cannot be null');
@@ -95,9 +86,8 @@ describe('ContentEditableComponent - defaults', () => {
     // Check that the element is not null or undefined
     expect(contentEditableElement).toBeDefined();
 
-    // Check that the contenteditable attribute is 'true' (the element is editable)
+    // Check that the scontenteditable attribute is 'true' (the element is editable)
     expect(contentEditableElement).toHaveAttribute('contenteditable', 'true');
-    console.log(contentEditableElement);
     // Check that the element is an instance of HTMLElement
     expect(contentEditableElement).toBeInstanceOf(HTMLElement);
   });
@@ -119,6 +109,7 @@ describe('ContentEditableComponent - default styles', () => {
   beforeEach(() => {
     // Set up a DOM element as a render target
     container = document.createElement('div');
+    container.id = 'test-defaults-styles';
     document.body.appendChild(container);
 
     // Instantiate the component
@@ -127,7 +118,7 @@ describe('ContentEditableComponent - default styles', () => {
     container.appendChild(component.render());
 
     contentEditableElement = container.querySelector(
-      '[contenteditable]',
+      '#test-defaults-styles [contenteditable]',
     ) as HTMLElement;
     if (!contentEditableElement) {
       throw new Error('Test Exception - contentEditableElement cannot be null');
@@ -144,7 +135,6 @@ describe('ContentEditableComponent - default styles', () => {
 
     // Check that the contenteditable attribute is 'true' (the element is editable)
     expect(contentEditableElement).toHaveAttribute('contenteditable', 'true');
-    console.log(contentEditableElement);
     // Check that the element is an instance of HTMLElement
     expect(contentEditableElement).toBeInstanceOf(HTMLElement);
   });
@@ -167,6 +157,7 @@ describe('ContentEditableComponent - default styles', () => {
 
     // Check if the rendered element's style matches the default styles
     for (const [key, value] of Object.entries(defaultStyles)) {
+      console.log(key, value, computedStyles);
       expect(computedStyles[key as any]).toBe(value);
       expect(contentEditableElement.style[key as any]).toBe(value);
     }
