@@ -1,4 +1,4 @@
-// ContentEditableComponent.ts
+// file: ./src/core/content-editable.ts
 interface ContentEditableComponentProps {
   content?: string;
   useDefaultStyle?: boolean;
@@ -63,6 +63,27 @@ export default class ContentEditableComponent {
     helpers.setDefaultContent(this.element, content);
     helpers.setAsContentEditable(this.element);
     this.setUseDefaultStyle(useDefaultStyle);
+
+    this.element.addEventListener('input', this.handleInput);
+  }
+
+  public destroy(): void {
+    // Remove event listeners
+    this.element.removeEventListener('input', this.handleInput);
+
+    if (this.element.parentNode) {
+      this.element.parentNode.removeChild(this.element);
+    }
+  }
+
+  // Example event handler method
+  private handleInput = (event: Event) => {
+    // Handle the input event
+    console.log('Input event fired:', event);
+  };
+
+  updateText(newText: string) {
+    this.element.textContent = newText;
   }
 
   setUseDefaultStyle(useDefaultStyle: boolean): void {

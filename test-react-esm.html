@@ -1,26 +1,45 @@
+<!-- file: test-react-esm.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>React ESM Test</title>
-    <!-- Ensure that you have Babel Standalone included if you want to use JSX inside the browser -->
+    <!-- Include React and ReactDOM UMD builds -->
+    <script crossorigin src="https://unpkg.com/react/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+    <!-- Include Babel Standalone for JSX transformation -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="./dist/content-editable-base.react.umd.js"></script>
 </head>
 <body>
     <div id="root"></div>
+    <!-- Define your components using type="text/babel" for JSX transformation -->
     <script type="text/babel" data-type="module">
-        // Import the React and ReactDOM libraries from Skypack CDN as ESM
-        import React from 'https://cdn.skypack.dev/react';
-        import ReactDOM from 'https://cdn.skypack.dev/react-dom';
-        import ContentEditableReact from './src/content-editbale-react'
-        // Define a simple React component
+        // Use the global variable exposed by your UMD/IIFE bundle
+        const { ContentEditableReact } = contentEditableReactBase;
+
+        console.log('here')
+        console.log(ContentEditableReact)
+        
         const App = () => {
-            return <ContentEditableReact />;
+            const handleChange = (e) => {
+                console.log(e.target.value);
+            };
+
+            return (
+                <ContentEditableReact value="Edit me" onChange={handleChange} />
+            );
         };
 
-        // Render the component to the DOM
-        ReactDOM.render(<App />, document.getElementById('root'));
+        const container = document.getElementById('root');
+        ReactDOM.createRoot(container).render(<App/>);
+        // Render the component to the DOM using ReactDOM
+        // const { createRoot } = ReactDOM;
+        // const container = document.getElementById('root');
+        // const root = createRoot(container);
+        // root.render(<App />);
     </script>
+    <!-- Load your React and ReactDOM libraries and render the component -->
 </body>
 </html>

@@ -11,10 +11,10 @@
   "tasks": {
     "start": {
       "name": "start",
-      "command": "yarn start",
+      "command": "yarn dev",
       "runAtStart": true,
       "preview": {
-        "port": 3001
+        "port": 3002
       }
     },
     "build": {
@@ -23,11 +23,19 @@
       "runAtStart": false
     },
     "test": {
-      "name": "test",
+      "name": "unit test",
       "command": "yarn jest",
       "runAtStart": true,
       "preview": {
-        "port": 3002
+        "port": 3003
+      }
+    },
+    "test-react": {
+      "name": "react-tester",
+      "command": "cd tests/test-react-esm && yarn start",
+      "runAtStart": true,
+      "preview": {
+        "port": 3000
       }
     }
   }
