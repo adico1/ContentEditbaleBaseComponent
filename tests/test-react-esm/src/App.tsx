@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import ContentEditable from '@adico/';
+import ContentEditableReact from '@adico/content-editable-base';
 
 function App() {
   return (

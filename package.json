@@ -4,6 +4,7 @@
   "description": "A flexible and framework-agnostic content-editable component library with React bindings.",
   "main": "dist/content-editable-base.umd.js",
   "module": "dist/content-editable-base.esm.js",
+  "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/content-editable-base.esm.js",

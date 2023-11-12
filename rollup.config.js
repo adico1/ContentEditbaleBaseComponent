@@ -1,6 +1,7 @@
 // file: rollup.config.js
 const resolve = require('@rollup/plugin-node-resolve');
 const typescript = require('@rollup/plugin-typescript');
+import dts from 'rollup-plugin-dts';
 const terser = require('@rollup/plugin-terser');
 const serve = require('rollup-plugin-serve');
 const livereload = require('rollup-plugin-livereload');
@@ -16,18 +17,35 @@ const productionOutputOptions = {
 const commonPlugins = [
   resolve(),
   // Set 'sourcemap' option to true for TypeScript plugin when in development mode
-  typescript({ tsconfig: './tsconfig.json', sourceMap: isDev, inlineSources: isDev }),
-  isDev ? serve({
-    open: true,
-    contentBase: ['dist', '.'],
-    host: 'localhost',
-    port: 3001,
-  }) : null,
-  isDev ? livereload({
-    watch: ['dist', '.'],
-  }) : null,
+  typescript({
+    tsconfig: './tsconfig.json',
+    sourceMap: isDev,
+    inlineSources: isDev,
+    outputToFilesystem: true,
+  }),
+  isDev
+    ? serve({
+        open: true,
+        contentBase: ['dist', '.'],
+        host: 'localhost',
+        port: 3001,
+      })
+    : null,
+  isDev
+    ? livereload({
+        watch: ['dist', '.'],
+      })
+    : null,
   !isDev ? terser() : null,
 ].filter(Boolean); // Use 'filter(Boolean)' to remove 'null' values in production
+
+// Separate configuration for .d.ts files
+const configDts = {
+  input: 'src/index.ts',
+  output: [{ file: 'dist/index.d.ts', format: 'es' }],
+  plugins: [dts()],
+  external: [/\.css$/], // Exclude CSS or other non-JS assets
+};
 
 // React-specific build configurations
 const reactConfig = {
@@ -99,5 +117,5 @@ module.exports = [
           plugins: [...commonPlugins],
         },
       ]
-    : []),
+    : [configDts]),
 ];
